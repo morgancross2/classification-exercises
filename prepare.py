@@ -63,7 +63,7 @@ def prep_telco(telco):
     telco.device_protection = telco.device_protection.str.replace('No internet service', '0').str.replace('Yes', '1').str.replace('No', '0').astype('int')
     telco.tech_support = telco.tech_support.str.replace('No internet service', '0').str.replace('Yes', '1').str.replace('No', '0').astype('int')
     telco.streaming_tv = telco.streaming_tv.str.replace('No internet service', '0').str.replace('Yes', '1').str.replace('No', '0').astype('int')
-    telco.streaming_movies = telco.streaming_movies.str.replace('No internet service', '0').str.replace('Yes', '2').str.replace('No', '0').astype('int')
+    telco.streaming_movies = telco.streaming_movies.str.replace('No internet service', '0').str.replace('Yes', '1').str.replace('No', '0').astype('int')
     
     return telco
 
