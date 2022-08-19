@@ -41,15 +41,7 @@ def prep_telco(telco):
     # drop foreign key columns
     telco = telco.drop(columns=['internet_service_type_id', 'payment_type_id', 'contract_type_id'])
     
-    # split out 0 vs 1 columns
-    dummies = pd.get_dummies(telco[['gender','partner', 'dependents', 'phone_service','paperless_billing', 'churn']], drop_first=True)
-    telco = pd.concat([telco, dummies], axis=1)
-    telco = telco.drop(columns=['gender', 'partner', 'dependents', 'phone_service','paperless_billing', 'churn'])
-    
     # split out category columns
-    dum = pd.get_dummies(telco.contract_type)
-    telco = pd.concat([telco, dum], axis=1)
-    telco = telco.drop(columns='contract_type')
     dum = pd.get_dummies(telco.internet_service_type)
     telco = pd.concat([telco, dum[['DSL', 'Fiber optic']]], axis=1)
     dum = pd.get_dummies(telco.payment_type)
@@ -57,6 +49,13 @@ def prep_telco(telco):
     telco = telco.drop(columns=(['payment_type', 'internet_service_type']))
     
     # relabel final columns with 0 or 1 values
+    telco.contract_type = telco.contract_type.str.replace('Month-to-month', '12').str.replace('One year', '1').str.replace('Two year', '2').astype('int')
+    telco.gender = telco.gender.str.replace('Female', '0').str.replace('Male', '1').astype('int')
+    telco.partner = telco.partner.str.replace('No', '0').str.replace('Yes', '1').astype('int')
+    telco.dependents = telco.dependents.str.replace('No', '0').str.replace('Yes', '1').astype('int')
+    telco.phone_service = telco.phone_service.str.replace('No', '0').str.replace('Yes', '1').astype('int')
+    telco.paperless_billing = telco.paperless_billing.str.replace('No', '0').str.replace('Yes', '1').astype('int')
+    telco.churn = telco.churn.str.replace('No', '0').str.replace('Yes', '1').astype('int')
     telco.multiple_lines = telco.multiple_lines.str.replace('No phone service', '0').str.replace('Yes', '2').str.replace('No', '1').astype('int')
     telco.online_security = telco.online_security.str.replace('No internet service', '0').str.replace('Yes', '1').str.replace('No', '0').astype('int')
     telco.online_backup = telco.online_backup.str.replace('No internet service', '0').str.replace('Yes', '1').str.replace('No', '0').astype('int')

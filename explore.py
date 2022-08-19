@@ -21,7 +21,7 @@ def explore_cats(train, cats, target):
         plt.show()
     
         sns.barplot(data=train, x=col, y=target)
-        rate = train.churn_Yes.mean()
+        rate = train[target].mean()
         plt.axhline(rate, label= 'average ' + target + ' rate')
         plt.legend()
         plt.title(target+' rate by '+col)
